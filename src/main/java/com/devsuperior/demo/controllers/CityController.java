@@ -10,6 +10,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.devsuperior.demo.dto.CityDTO;
 import com.devsuperior.demo.services.CityService;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +35,9 @@ public class CityController {
         return ResponseEntity.ok(cityService.findAllCities());
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping()
-    public ResponseEntity<CityDTO> insert(@RequestBody CityDTO city) {
+    public ResponseEntity<CityDTO> insert(@Valid @RequestBody CityDTO city) {
         var newCity = cityService.insertCity(city);
         var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newCity.getId()).toUri();
         
